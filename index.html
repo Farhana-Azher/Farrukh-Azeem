@@ -11,12 +11,12 @@
   :root{
     --bg:#0A0A0F;
     --surface:#111118;
+    --card:#16161F;
     --border:#22222E;
     --border-glow:#2E2E45;
     --accent:#4ECDC4;
     --text:#FFFFFF;
-    --muted:#9E9EAE;
-    --muted-light:#C8C8D8;
+    --muted:#C8C8D8;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -29,76 +29,96 @@
   }
   h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;}
   a{color:inherit;text-decoration:none;}
-  .container{max-width:980px;margin:0 auto;padding:0 40px;}
+  .noise{
+    position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .container{max-width:1200px;margin:0 auto;padding:0 40px;}
 
   /* NAV */
   nav{
     position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(10,10,15,.88);backdrop-filter:blur(10px);
+    background:rgba(10,10,15,.85);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--border);
   }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;max-width:980px;margin:0 auto;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;max-width:1200px;margin:0 auto;}
   .nav-brand{display:flex;align-items:center;gap:18px;}
   .tt-logo-link{display:flex;align-items:center;padding-right:18px;border-right:1px solid var(--border-glow);}
-  .tt-logo{height:32px;width:auto;display:block;opacity:1;transition:opacity .2s;}
+  .tt-logo{height:38px;width:auto;display:block;opacity:1;transition:opacity .2s;}
   .tt-logo-link:hover .tt-logo{opacity:.85;}
-  .nav-name{font-family:'Playfair Display',serif;font-size:1.05rem;letter-spacing:.5px;}
-  .nav-links{display:flex;gap:32px;font-size:.78rem;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);}
-  .nav-links a:hover{color:var(--accent);}
+  .nav-name{font-family:'Playfair Display',serif;font-size:1.1rem;letter-spacing:.5px;}
+  .nav-links{display:flex;gap:36px;font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;}
+  .nav-links a{opacity:.75;transition:opacity .2s, color .2s;}
+  .nav-links a:hover, .nav-links a.active{opacity:1;color:var(--accent);}
+  .nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;z-index:200;}
+  .nav-hamburger span{width:24px;height:2px;background:var(--text);display:block;}
+  .mobile-drawer{
+    position:fixed;inset:0;background:#0A0A0Ff2;backdrop-filter:blur(14px);
+    z-index:150;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+    transform:translateY(-100%);transition:transform .35s ease;
+  }
+  .mobile-drawer.open{transform:translateY(0);}
+  .mobile-drawer a{font-size:1.4rem;font-family:'Playfair Display',serif;}
+  .drawer-close{position:absolute;top:26px;right:30px;font-size:1.8rem;background:none;border:none;color:var(--text);cursor:pointer;}
 
   /* HERO */
   .hero{
-    padding:190px 0 70px;max-width:980px;margin:0 auto;
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:140px 40px 80px;max-width:1200px;margin:0 auto;position:relative;z-index:2;
   }
-  .hero-role{font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:22px;}
-  .hero h1{font-size:2.5rem;line-height:1.28;max-width:760px;margin-bottom:36px;font-weight:600;}
+  .hero-eyebrow{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:24px;}
+  .hero-eyebrow span:not(:last-child)::after{content:"·";color:var(--muted);margin-left:14px;}
+  .hero h1{font-size:2.85rem;line-height:1.22;max-width:800px;margin-bottom:32px;}
 
-  /* PHOENIX CALLOUT */
+  /* PHOENIX / STANDARD LIFE CALLOUT */
   .callout{
     border:1px solid var(--border-glow);
     border-left:3px solid var(--accent);
+    border-radius:10px;
     padding:26px 32px;
-    margin-bottom:44px;
+    margin-bottom:36px;
     max-width:660px;
+    background:var(--surface);
   }
   .callout-label{font-size:.72rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
-  .callout h2{font-size:1.15rem;margin-bottom:6px;font-weight:600;}
-  .callout p{font-size:.88rem;color:var(--muted-light);}
+  .callout h2{font-size:1.15rem;margin-bottom:6px;font-weight:600;font-family:'Outfit',sans-serif;}
+  .callout p{font-size:.88rem;color:var(--muted);}
 
-  .evidence-strip{
-    display:flex;flex-wrap:wrap;gap:0;
-    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-    padding:26px 0;
+  .hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;}
+  .tag{
+    padding:8px 16px;border:1px solid var(--border-glow);border-radius:100px;
+    font-size:.82rem;color:var(--muted);background:var(--surface);
   }
-  .evidence-item{
-    padding:6px 28px;font-size:.82rem;color:var(--muted-light);letter-spacing:.2px;
-    border-left:1px solid var(--border);
-  }
-  .evidence-item:first-child{border-left:none;padding-left:0;}
-  .evidence-item strong{color:var(--text);font-weight:500;}
+  .tag.highlight{border-color:var(--accent);color:var(--accent);}
+  .cta-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:20px;}
+  .cta-secondary{font-size:.9rem;color:var(--muted);border-bottom:1px solid var(--border-glow);padding-bottom:2px;}
+  .scroll-hint{position:absolute;bottom:20px;left:40px;font-size:.75rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
 
-  .cta-row{margin-top:30px;}
-  .cta-secondary{font-size:.88rem;color:var(--muted-light);border-bottom:1px solid var(--border-glow);padding-bottom:2px;}
-  .cta-secondary:hover{color:var(--accent);border-color:var(--accent);}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);margin:0 auto;max-width:1200px;}
 
-  /* SECTIONS */
-  section{padding:90px 0;}
-  .section-label{font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
-  .section-title{font-size:1.7rem;max-width:640px;margin-bottom:16px;font-weight:600;}
-  .section-sub{color:var(--muted);max-width:600px;line-height:1.7;margin-bottom:56px;font-size:.95rem;}
-
-  .rule{height:1px;background:var(--border);margin:0 auto;max-width:980px;}
+  section{padding:110px 0;position:relative;z-index:2;}
+  .why-section-tight{padding-bottom:40px;}
+  .section-label{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .section-title{font-size:2rem;max-width:680px;margin-bottom:20px;}
+  .section-sub{color:var(--muted);max-width:640px;line-height:1.7;margin-bottom:0;}
 
   /* CASE HEADER */
   .case-header{margin-bottom:8px;}
-  .case-header h3{font-size:1.45rem;margin-bottom:6px;}
-  .case-header .case-meta{color:var(--muted);font-size:.88rem;}
+  .case-header h3{font-size:1.4rem;color:var(--text);margin-bottom:6px;}
+  .case-header .case-meta{color:var(--muted);font-size:.9rem;}
 
-  /* SCOPE GRID (Phoenix) */
-  .scope-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:48px;margin-bottom:52px;}
+  /* CASE CARD (Standard Life / Royal London / NatWest) */
+  .tool-case{
+    background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-top:44px;
+  }
+  .tool-header{padding:34px 40px;border-bottom:1px solid var(--border);}
+  .tool-body{padding:36px 40px;}
+
+  /* SCOPE GRID (Standard Life) */
+  .scope-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-bottom:44px;}
   .scope-col h4{font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
   .scope-col ul{list-style:none;}
-  .scope-col li{font-size:.85rem;color:var(--muted-light);line-height:1.85;}
+  .scope-col li{font-size:.85rem;color:var(--muted);line-height:1.85;}
 
   @media (max-width:900px){
     .scope-grid{grid-template-columns:1fr 1fr;}
@@ -107,90 +127,150 @@
     .scope-grid{grid-template-columns:1fr;}
   }
 
-  /* WORK LIST */
+  /* WORK LIST (evidence bullets) */
   .work-list{display:flex;flex-direction:column;}
-  .work-item{padding:26px 0;border-top:1px solid var(--border);}
-  .work-item:last-child{border-bottom:1px solid var(--border);}
-  .work-item p{color:var(--muted-light);font-size:.9rem;line-height:1.7;max-width:760px;}
+  .work-item{padding:22px 0;border-top:1px solid var(--border);}
+  .work-item:last-child{border-bottom:none;}
+  .work-item p{color:var(--muted);font-size:.92rem;line-height:1.7;max-width:820px;padding-left:20px;position:relative;}
+  .work-item p::before{content:"→";position:absolute;left:0;color:var(--accent);}
 
-  /* CASE GRID (2x2) */
-  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:48px;border:1px solid var(--border);}
-  .case-block{background:var(--bg);padding:34px 36px;}
+  /* CASE GRID (2x2, Royal London / NatWest) */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .case-block{background:var(--card);padding:30px 32px;}
   .case-block h4{font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
   .case-block ul{list-style:none;}
-  .case-block li{font-size:.87rem;color:var(--muted-light);line-height:1.65;margin-bottom:9px;padding-left:14px;position:relative;}
-  .case-block li::before{content:"\2013";position:absolute;left:0;color:var(--muted);}
+  .case-block li{font-size:.87rem;color:var(--muted);line-height:1.7;margin-bottom:9px;padding-left:16px;position:relative;}
+  .case-block li::before{content:"→";position:absolute;left:0;color:var(--accent);}
 
   @media (max-width:700px){
     .case-grid{grid-template-columns:1fr;}
-    .case-block{padding:28px 24px;}
+    .case-block{padding:26px 24px;}
   }
 
-  /* CAPABILITY */
-  .capability-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
-  .capability-col h4{font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
-  .capability-col ul{list-style:none;}
-  .capability-col li{font-size:.85rem;color:var(--muted-light);line-height:1.9;}
+  /* CAPABILITY (icon-led skills grid) */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .skill-cell{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px 26px;
+    transition:border-color .25s, transform .25s;
+  }
+  .skill-cell:hover{border-color:var(--border-glow);transform:translateY(-4px);}
+  .skill-icon{font-size:1.8rem;margin-bottom:16px;display:block;}
+  .skill-cell h3{font-family:'Outfit',sans-serif;font-weight:600;font-size:1rem;margin-bottom:12px;color:var(--text);}
+  .skill-cell ul{list-style:none;}
+  .skill-cell li{font-size:.85rem;color:var(--muted);line-height:1.9;}
 
   @media (max-width:900px){
-    .capability-grid{grid-template-columns:1fr 1fr;}
+    .skills-grid{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:560px){
-    .capability-grid{grid-template-columns:1fr;}
+    .skills-grid{grid-template-columns:1fr;}
   }
 
   /* TIMELINE */
   .timeline{display:flex;flex-direction:column;}
-  .timeline-item{display:grid;grid-template-columns:160px 1fr;gap:36px;padding:22px 0;border-top:1px solid var(--border);}
+  .timeline-item{display:grid;grid-template-columns:180px 1fr;gap:36px;padding:26px 0;border-top:1px solid var(--border);}
   .timeline-item:last-child{border-bottom:1px solid var(--border);}
-  .timeline-years{font-size:.85rem;color:var(--accent);letter-spacing:.5px;padding-top:3px;}
-  .timeline-org h4{font-size:1.02rem;margin-bottom:6px;font-family:'Playfair Display',serif;font-weight:600;}
-  .timeline-org p{color:var(--muted-light);font-size:.85rem;line-height:1.6;}
+  .timeline-years{font-size:.88rem;color:var(--accent);letter-spacing:.5px;padding-top:3px;}
+  .timeline-org h4{font-size:1.08rem;margin-bottom:8px;font-family:'Playfair Display',serif;font-weight:600;}
+  .timeline-org p{color:var(--muted);font-size:.9rem;line-height:1.65;}
 
   @media (max-width:600px){
     .timeline-item{grid-template-columns:1fr;gap:8px;}
   }
 
   /* QUALIFICATIONS */
-  .qual-primary{padding:30px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:0;}
-  .qual-primary h3{font-size:1.15rem;margin-bottom:6px;}
-  .qual-primary p{color:var(--muted);font-size:.85rem;}
+  .qual-primary{padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border-glow);margin-bottom:0;}
+  .qual-primary h3{font-size:1.3rem;margin-bottom:6px;color:var(--accent);}
+  .qual-primary p{color:var(--muted);font-size:.88rem;}
   .qual-list{display:flex;flex-wrap:wrap;gap:0;margin-top:0;}
-  .qual-list-item{padding:20px 28px 20px 0;font-size:.88rem;color:var(--muted-light);border-right:1px solid var(--border);margin-right:28px;}
+  .qual-list-item{padding:22px 30px 22px 0;font-size:.9rem;color:var(--muted);border-right:1px solid var(--border);margin-right:30px;}
   .qual-list-item:last-child{border-right:none;margin-right:0;}
 
   @media (max-width:700px){
     .qual-list{flex-direction:column;}
-    .qual-list-item{border-right:none;padding:14px 0;border-bottom:1px solid var(--border);margin-right:0;}
+    .qual-list-item{border-right:none;padding:16px 0;border-bottom:1px solid var(--border);margin-right:0;}
+  }
+
+  /* LOGO TICKER */
+  .logo-ticker-section{padding:70px 0;}
+  .logo-ticker-section .section-label{margin-bottom:36px;}
+  .ticker-wrap{
+    width:100%;overflow:hidden;position:relative;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .ticker-track{
+    display:flex;align-items:center;gap:64px;width:max-content;
+    animation:tickerScroll 42s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track{animation-play-state:paused;}
+  .ticker-item{
+    display:flex;align-items:center;justify-content:center;
+    height:56px;min-width:120px;opacity:1;
+  }
+  .ticker-item img{max-height:40px;max-width:150px;object-fit:contain;}
+  .ticker-item.logo-card{
+    background:#fff;border-radius:8px;padding:8px 14px;height:auto;
+    min-width:0;width:fit-content;
+    opacity:1;
+  }
+  .ticker-item.logo-card img{max-height:44px;max-width:140px;}
+  .ticker-fallback{
+    display:none;font-family:'Playfair Display',serif;font-size:1.15rem;
+    color:var(--muted);white-space:nowrap;letter-spacing:.5px;
+  }
+  @keyframes tickerScroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
   }
 
   /* CLOSING */
   .closing{padding:100px 0 120px;}
-  .closing p{font-family:'Playfair Display',serif;font-size:1.45rem;line-height:1.6;max-width:800px;color:var(--text);font-weight:500;}
+  .closing p{font-family:'Playfair Display',serif;font-size:1.55rem;line-height:1.6;max-width:820px;color:var(--text);font-weight:500;}
   .closing p em{color:var(--accent);font-style:normal;}
 
   /* FOOTER */
-  footer{padding:50px 0;border-top:1px solid var(--border);}
-  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
-  footer .f-name{font-family:'Playfair Display',serif;font-size:1.1rem;}
-  footer .f-links a{font-size:.82rem;color:var(--muted-light);}
+  footer{padding:60px 0;border-top:1px solid var(--border);text-align:center;}
+  footer .f-name{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:14px;}
+  footer .f-links{display:flex;justify-content:center;gap:24px;font-size:.85rem;color:var(--muted);margin-bottom:16px;}
   footer .f-links a:hover{color:var(--accent);}
-  footer .copyright{font-size:.75rem;color:#5a5a68;}
+  footer .copyright{font-size:.78rem;color:#5a5a68;}
   .footer-tt-link{color:#5a5a68;text-decoration:underline;text-underline-offset:2px;transition:color .2s;}
   .footer-tt-link:hover{color:var(--accent);}
 
+  .back-to-top{
+    position:fixed;bottom:30px;right:30px;width:46px;height:46px;border-radius:50%;
+    background:var(--accent);color:#0A0A0F;display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;border:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s, transform .3s;
+    z-index:90;
+  }
+  .back-to-top.show{opacity:1;pointer-events:auto;}
+  .back-to-top:hover{transform:translateY(-3px);}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
   @media (max-width:768px){
     .container{padding:0 24px;}
-    .nav-inner{padding:16px 24px;}
     .nav-links{display:none;}
-    .hero{padding:150px 0 50px;}
-    .hero h1{font-size:1.9rem;}
-    section{padding:64px 0;}
-    .footer-inner{flex-direction:column;align-items:flex-start;}
+    .nav-hamburger{display:flex;}
+    .nav-name{font-size:.9rem;}
+    .tt-logo{height:28px;}
+    .tt-logo-link{padding-right:12px;}
+    .nav-brand{gap:12px;}
+    .hero{padding:120px 24px 60px;}
+    .hero h1{font-size:2rem;}
+    section{padding:70px 0;}
+    .tool-header{padding:26px 24px;}
+    .tool-body{padding:26px 24px;}
+  }
+  @media (max-width:380px){
+    .hero h1{font-size:1.75rem;}
   }
 </style>
 </head>
 <body>
+<div class="noise"></div>
 
 <nav>
   <div class="nav-inner">
@@ -205,166 +285,191 @@
       <a href="#royal-london">Royal London</a>
       <a href="#background">Background</a>
     </div>
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="container">
-  <section class="hero">
-    <div class="hero-role">Senior Technical Business Analyst</div>
-    <h1>Recent Standard Life experience. Deep pensions expertise. Technical delivery capability.</h1>
-
-    <div class="callout">
-      <div class="callout-label">Recent Phoenix / Standard Life Experience</div>
-      <h2>Lead Business Analyst / Technical Business Analysis Manager</h2>
-      <p>May 2024 to June 2025</p>
-    </div>
-
-    <div class="evidence-strip">
-      <div class="evidence-item"><strong>15+ Years</strong> BA Experience</div>
-      <div class="evidence-item">Pensions &amp; Retirement</div>
-      <div class="evidence-item">Phoenix / Standard Life</div>
-      <div class="evidence-item">Royal London</div>
-      <div class="evidence-item">API &amp; Integration</div>
-      <div class="evidence-item">Data Migration</div>
-    </div>
-
-    <div class="cta-row">
-      <a href="https://www.linkedin.com/in/farrukh-azeem-705b6917/" target="_blank" rel="noopener" class="cta-secondary">View LinkedIn Profile</a>
-    </div>
-  </section>
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <a href="#standard-life">Standard Life</a>
+  <a href="#royal-london">Royal London</a>
+  <a href="#background">Background</a>
 </div>
 
-<div class="rule"></div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span>Senior Technical Business Analyst</span>
+    <span>Pensions &amp; Retirement Transformation</span>
+    <span>Financial Services</span>
+  </div>
+  <h1>Recent Standard Life experience. Deep pensions expertise. Technical delivery capability.</h1>
+
+  <div class="callout">
+    <div class="callout-label">Recent Phoenix / Standard Life Experience</div>
+    <h2>Lead Business Analyst / Technical Business Analysis Manager</h2>
+    <p>May 2024 to June 2025</p>
+  </div>
+
+  <div class="hero-tags">
+    <span class="tag highlight">15+ Years BA Experience</span>
+    <span class="tag highlight">Pensions &amp; Retirement</span>
+    <span class="tag highlight">Phoenix / Standard Life</span>
+    <span class="tag">Royal London</span>
+    <span class="tag">API &amp; Integration</span>
+    <span class="tag">Data Migration</span>
+  </div>
+
+  <div class="cta-row">
+    <a href="https://www.linkedin.com/in/farrukh-azeem-705b6917/" target="_blank" rel="noopener" class="cta-secondary">View LinkedIn Profile</a>
+  </div>
+  <div class="scroll-hint">Scroll ↓</div>
+</section>
+
+<div class="divider container"></div>
 
 <!-- STANDARD LIFE EXPERIENCE -->
 <section id="standard-life">
   <div class="container">
-    <div class="section-label">Standard Life Experience</div>
-    <div class="case-header">
-      <h3>Lead Business Analyst / Technical Business Analysis Manager</h3>
-      <p class="case-meta">Phoenix Insurance Group / Standard Life, Pension Annuities &amp; Retirement Planning Advice, May 2024 to June 2025</p>
-    </div>
-    <p class="section-sub" style="margin-top:20px;margin-bottom:0;">Farrukh worked across process definition, operating model design and digital transformation supporting Phoenix / Standard Life's retirement advice operations, delivered during the group's rebranding to Standard Life and the formation of a separate legal entity for retirement advice.</p>
+    <div class="section-label reveal">Standard Life Experience</div>
+    <h2 class="section-title reveal">Direct experience within the Phoenix / Standard Life environment</h2>
 
-    <div class="scope-grid">
-      <div class="scope-col">
-        <h4>Pension &amp; Retirement</h4>
-        <ul>
-          <li>Annuities</li>
-          <li>Drawdown</li>
-          <li>Pension transfers</li>
-          <li>Retirement advice</li>
-        </ul>
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="case-header">
+          <h3>Lead Business Analyst / Technical Business Analysis Manager</h3>
+          <p class="case-meta">Phoenix Insurance Group / Standard Life, Pension Annuities &amp; Retirement Planning Advice, May 2024 to June 2025</p>
+        </div>
+        <p class="section-sub" style="margin-top:18px;">Farrukh worked across process definition, operating model design and digital transformation supporting Phoenix / Standard Life's retirement advice operations, delivered during the group's rebranding to Standard Life and the formation of a separate legal entity for retirement advice.</p>
       </div>
-      <div class="scope-col">
-        <h4>Business Analysis</h4>
-        <ul>
-          <li>Requirements</li>
-          <li>Technical specifications</li>
-          <li>User stories</li>
-          <li>Target Operating Model</li>
-        </ul>
-      </div>
-      <div class="scope-col">
-        <h4>Technology</h4>
-        <ul>
-          <li>Salesforce CRM</li>
-          <li>REST / SOAP APIs</li>
-          <li>Data migration</li>
-          <li>System integration</li>
-        </ul>
-      </div>
-      <div class="scope-col">
-        <h4>Delivery</h4>
-        <ul>
-          <li>AMS &amp; EPAM</li>
-          <li>Business &amp; Product</li>
-          <li>IT &amp; Regulatory stakeholders</li>
-        </ul>
-      </div>
-    </div>
+      <div class="tool-body">
+        <div class="scope-grid">
+          <div class="scope-col">
+            <h4>Pension &amp; Retirement</h4>
+            <ul>
+              <li>Annuities</li>
+              <li>Drawdown</li>
+              <li>Pension transfers</li>
+              <li>Retirement advice</li>
+            </ul>
+          </div>
+          <div class="scope-col">
+            <h4>Business Analysis</h4>
+            <ul>
+              <li>Requirements</li>
+              <li>Technical specifications</li>
+              <li>User stories</li>
+              <li>Target Operating Model</li>
+            </ul>
+          </div>
+          <div class="scope-col">
+            <h4>Technology</h4>
+            <ul>
+              <li>Salesforce CRM</li>
+              <li>REST / SOAP APIs</li>
+              <li>Data migration</li>
+              <li>System integration</li>
+            </ul>
+          </div>
+          <div class="scope-col">
+            <h4>Delivery</h4>
+            <ul>
+              <li>AMS &amp; EPAM</li>
+              <li>Business &amp; Product</li>
+              <li>IT &amp; Regulatory stakeholders</li>
+            </ul>
+          </div>
+        </div>
 
-    <div class="work-list">
-      <div class="work-item">
-        <p>Defined and documented the Annuities Target Operating Model as part of the Phoenix / Standard Life retirement transformation, mapping retirement advice processes and producing business requirements and technical specifications across pensions, annuities, drawdown and transfer solutions.</p>
-      </div>
-      <div class="work-item">
-        <p>Led data migration of client, policy, vulnerability, ID&amp;V, complaint and interaction data from legacy systems into Salesforce CRM, working across REST and SOAP API solutions to achieve interoperability between Salesforce and existing legacy platforms.</p>
-      </div>
-      <div class="work-item">
-        <p>Managed conflicting senior stakeholders across Business, Product, IT, regulatory and external partners, and ran weekly Scrum of Scrums and Architecture Review sessions with 25+ attendees to keep the programme accountable and unblock delivery.</p>
-      </div>
-      <div class="work-item">
-        <p>Built a Project Data Catalogue from scratch, establishing the central reference source for data sources, mappings, rules and APIs, and worked with two third-party vendors, AMS and EPAM, to deliver phased requirements as epics, features and stories.</p>
+        <div class="work-list">
+          <div class="work-item">
+            <p>Defined and documented the Annuities Target Operating Model as part of the Phoenix / Standard Life retirement transformation, mapping retirement advice processes and producing business requirements and technical specifications across pensions, annuities, drawdown and transfer solutions.</p>
+          </div>
+          <div class="work-item">
+            <p>Led data migration of client, policy, vulnerability, ID&amp;V, complaint and interaction data from legacy systems into Salesforce CRM, working across REST and SOAP API solutions to achieve interoperability between Salesforce and existing legacy platforms.</p>
+          </div>
+          <div class="work-item">
+            <p>Managed conflicting senior stakeholders across Business, Product, IT, regulatory and external partners, and ran weekly Scrum of Scrums and Architecture Review sessions with 25+ attendees to keep the programme accountable and unblock delivery.</p>
+          </div>
+          <div class="work-item">
+            <p>Built a Project Data Catalogue from scratch, establishing the central reference source for data sources, mappings, rules and APIs, and worked with two third-party vendors, AMS and EPAM, to deliver phased requirements as epics, features and stories.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
 
 <!-- CURRENT PENSIONS DELIVERY -->
 <section id="royal-london">
   <div class="container">
-    <div class="section-label">Current Pensions Delivery</div>
-    <div class="case-header">
-      <h3>Senior Business Analyst</h3>
-      <p class="case-meta">Royal London, Adviser Experience Transformation Programme, October 2025 to Present</p>
-    </div>
-    <p class="section-sub" style="margin-top:20px;margin-bottom:0;">Farrukh's pensions experience continued directly on from his Phoenix / Standard Life engagement, moving into a Senior Business Analyst role across Royal London's pension and adviser transformation programme.</p>
+    <div class="section-label reveal">Current Pensions Delivery</div>
+    <h2 class="section-title reveal">Continuous, recent pensions transformation experience</h2>
 
-    <div class="case-grid">
-      <div class="case-block">
-        <h4>Scope</h4>
-        <ul>
-          <li>Bulk Purchase Annuities (buy-in / buy-out)</li>
-          <li>Workplace pension journeys</li>
-          <li>Client Engagement Service</li>
-          <li>Personalised Client Review Service</li>
-        </ul>
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="case-header">
+          <h3>Senior Business Analyst</h3>
+          <p class="case-meta">Royal London, Adviser Experience Transformation Programme, October 2025 to Present</p>
+        </div>
+        <p class="section-sub" style="margin-top:18px;">Farrukh's pensions experience continued directly on from his Phoenix / Standard Life engagement, moving into a Senior Business Analyst role across Royal London's pension and adviser transformation programme.</p>
       </div>
-      <div class="case-block">
-        <h4>Delivery Focus</h4>
-        <ul>
-          <li>Requirements, user stories and acceptance criteria</li>
-          <li>Adviser and customer journeys</li>
-          <li>IntelliPen legacy migration</li>
-          <li>Data mapping, integration and reconciliation</li>
-        </ul>
-      </div>
-      <div class="case-block">
-        <h4>Team Environment</h4>
-        <ul>
-          <li>Works across GDO, CRM, API and Digital development teams</li>
-          <li>Partners with Product Owners and Engineering on build-ready requirements</li>
-        </ul>
-      </div>
-      <div class="case-block">
-        <h4>External Collaboration</h4>
-        <ul>
-          <li>IBM</li>
-          <li>TCS</li>
-          <li>Optimizely</li>
-          <li>Procentia</li>
-          <li>Third-party suppliers on data migration and integration</li>
-        </ul>
+      <div class="tool-body">
+        <div class="case-grid">
+          <div class="case-block">
+            <h4>Scope</h4>
+            <ul>
+              <li>Bulk Purchase Annuities (buy-in / buy-out)</li>
+              <li>Workplace pension journeys</li>
+              <li>Client Engagement Service</li>
+              <li>Personalised Client Review Service</li>
+            </ul>
+          </div>
+          <div class="case-block">
+            <h4>Delivery Focus</h4>
+            <ul>
+              <li>Requirements, user stories and acceptance criteria</li>
+              <li>Adviser and customer journeys</li>
+              <li>IntelliPen legacy migration</li>
+              <li>Data mapping, integration and reconciliation</li>
+            </ul>
+          </div>
+          <div class="case-block">
+            <h4>Team Environment</h4>
+            <ul>
+              <li>Works across GDO, CRM, API and Digital development teams</li>
+              <li>Partners with Product Owners and Engineering on build-ready requirements</li>
+            </ul>
+          </div>
+          <div class="case-block">
+            <h4>External Collaboration</h4>
+            <ul>
+              <li>IBM</li>
+              <li>TCS</li>
+              <li>Optimizely</li>
+              <li>Procentia</li>
+              <li>Third-party suppliers on data migration and integration</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
 
 <!-- REQUIREMENTS EXPERTISE -->
 <section>
   <div class="container">
-    <div class="section-label">Requirements Expertise</div>
-    <h2 class="section-title">Not simply a Data BA</h2>
-
-    <div class="capability-grid" style="margin-top:44px;">
-      <div class="capability-col">
-        <h4>Traditional Business Analysis</h4>
+    <div class="section-label reveal">Requirements Expertise</div>
+    <h2 class="section-title reveal">Not simply a Data BA</h2>
+    <div class="skills-grid" style="margin-top:44px;">
+      <div class="skill-cell reveal">
+        <span class="skill-icon">🎯</span>
+        <h3>Traditional Business Analysis</h3>
         <ul>
           <li>Requirements elicitation</li>
           <li>Stakeholder workshops</li>
@@ -374,8 +479,9 @@
           <li>UAT</li>
         </ul>
       </div>
-      <div class="capability-col">
-        <h4>Process &amp; Journey</h4>
+      <div class="skill-cell reveal">
+        <span class="skill-icon">🗺️</span>
+        <h3>Process &amp; Journey</h3>
         <ul>
           <li>BPMN 2.0</li>
           <li>As-is / To-be</li>
@@ -384,8 +490,9 @@
           <li>UML</li>
         </ul>
       </div>
-      <div class="capability-col">
-        <h4>Agile Delivery</h4>
+      <div class="skill-cell reveal">
+        <span class="skill-icon">✅</span>
+        <h3>Agile Delivery</h3>
         <ul>
           <li>Jira / Confluence</li>
           <li>Azure DevOps</li>
@@ -399,17 +506,17 @@
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
 
 <!-- TECHNICAL CAPABILITY -->
 <section>
   <div class="container">
-    <div class="section-label">Technical Capability</div>
-    <h2 class="section-title">A Technical Business Analyst, not a Data Engineer</h2>
-
-    <div class="capability-grid" style="margin-top:44px;">
-      <div class="capability-col">
-        <h4>Integration</h4>
+    <div class="section-label reveal">Technical Capability</div>
+    <h2 class="section-title reveal">A Technical Business Analyst, not a Data Engineer</h2>
+    <div class="skills-grid" style="margin-top:44px;">
+      <div class="skill-cell reveal">
+        <span class="skill-icon">🧩</span>
+        <h3>Integration</h3>
         <ul>
           <li>REST / SOAP APIs</li>
           <li>Microservices</li>
@@ -417,8 +524,9 @@
           <li>System interoperability</li>
         </ul>
       </div>
-      <div class="capability-col">
-        <h4>Data</h4>
+      <div class="skill-cell reveal">
+        <span class="skill-icon">📊</span>
+        <h3>Data</h3>
         <ul>
           <li>SQL / ETL</li>
           <li>Data mapping &amp; reconciliation</li>
@@ -428,8 +536,9 @@
           <li>Oracle / SQL Server / Snowflake</li>
         </ul>
       </div>
-      <div class="capability-col">
-        <h4>Cloud &amp; Analytics</h4>
+      <div class="skill-cell reveal">
+        <span class="skill-icon">🛠️</span>
+        <h3>Cloud &amp; Analytics</h3>
         <ul>
           <li>Azure / AWS / GCP</li>
           <li>Databricks</li>
@@ -440,58 +549,92 @@
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
+
+<!-- LOGO TICKER -->
+<section class="logo-ticker-section">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center;">Companies &amp; Institutions</div>
+  </div>
+  <div class="ticker-wrap reveal">
+    <div class="ticker-track">
+      <div class="ticker-item logo-card"><img src="LOGO_ROYALLONDON.png" alt="Royal London" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Royal London</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_STANDARDLIFE.png" alt="Standard Life" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Standard Life</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_PHOENIXGROUP.png" alt="Phoenix Group" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Phoenix Group</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_NATWEST.png" alt="NatWest" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">NatWest</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_BARCLAYS.png" alt="Barclays" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Barclays</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_PRUDENTIAL.png" alt="Prudential" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Prudential</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_RBS.png" alt="RBS" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">RBS</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_IBM.png" alt="IBM" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">IBM</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_TCS.png" alt="TCS" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">TCS</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_OPTIMIZELY.png" alt="Optimizely" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Optimizely</span></div>
+      <!-- duplicate set for seamless loop -->
+      <div class="ticker-item logo-card"><img src="LOGO_ROYALLONDON.png" alt="Royal London" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Royal London</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_STANDARDLIFE.png" alt="Standard Life" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Standard Life</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_PHOENIXGROUP.png" alt="Phoenix Group" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Phoenix Group</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_NATWEST.png" alt="NatWest" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">NatWest</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_BARCLAYS.png" alt="Barclays" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Barclays</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_PRUDENTIAL.png" alt="Prudential" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Prudential</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_RBS.png" alt="RBS" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">RBS</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_IBM.png" alt="IBM" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">IBM</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_TCS.png" alt="TCS" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">TCS</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_OPTIMIZELY.png" alt="Optimizely" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Optimizely</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
 
 <!-- FINANCIAL SERVICES CAREER -->
 <section id="background">
   <div class="container">
-    <div class="section-label">Financial Services Career</div>
-    <h2 class="section-title">Fifteen years across pensions, banking and insurance</h2>
+    <div class="section-label reveal">Financial Services Career</div>
+    <h2 class="section-title reveal">Fifteen years across pensions, banking and insurance</h2>
 
     <div class="timeline" style="margin-top:44px;">
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2025 to Present</div>
         <div class="timeline-org">
           <h4>Royal London</h4>
           <p>Pensions and adviser transformation</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2024 to 2025</div>
         <div class="timeline-org">
           <h4>Phoenix / Standard Life</h4>
           <p>Pension annuities and retirement planning advice</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2021 to 2024</div>
         <div class="timeline-org">
           <h4>NatWest</h4>
           <p>Simplification, mortgages, migration and digital transformation</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2020 to 2021</div>
         <div class="timeline-org">
           <h4>Barclays</h4>
           <p>Legal technology</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2018 to 2019</div>
         <div class="timeline-org">
           <h4>Prudential</h4>
           <p>Digital transformation following the M&amp;G / Prudential demerger</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2018</div>
         <div class="timeline-org">
           <h4>RBS</h4>
           <p>GDPR and commercial / corporate lending</p>
         </div>
       </div>
-      <div class="timeline-item">
+      <div class="timeline-item reveal">
         <div class="timeline-years">2010 to 2016</div>
         <div class="timeline-org">
           <h4>Barclays Wealth</h4>
@@ -502,62 +645,69 @@
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
 
 <!-- NATWEST TECHNICAL TRANSFORMATION -->
-<section>
+<section class="why-section-tight">
   <div class="container">
-    <div class="section-label">NatWest Technical Transformation</div>
-    <div class="case-header">
-      <h3>Simplification Programme</h3>
-      <p class="case-meta">NatWest, June 2023 to January 2024</p>
-    </div>
-    <p class="section-sub" style="margin-top:20px;">Farrukh supported a group-wide initiative reviewing 52 legacy applications for decommissioning, replatforming or migration.</p>
+    <div class="section-label reveal">NatWest Technical Transformation</div>
+    <h2 class="section-title reveal">A secondary case study demonstrating breadth beyond pensions</h2>
 
-    <div class="capability-grid">
-      <div class="capability-col">
-        <h4>Analysis</h4>
-        <ul>
-          <li>Requirements gathering</li>
-          <li>Data flows</li>
-          <li>Functional specifications</li>
-          <li>Compliance</li>
-        </ul>
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="case-header">
+          <h3>Simplification Programme</h3>
+          <p class="case-meta">NatWest, June 2023 to January 2024</p>
+        </div>
+        <p class="section-sub" style="margin-top:18px;">Farrukh supported a group-wide initiative reviewing 52 legacy applications for decommissioning, replatforming or migration.</p>
       </div>
-      <div class="capability-col">
-        <h4>Technology</h4>
-        <ul>
-          <li>.NET</li>
-          <li>SQL Server</li>
-          <li>Business Objects</li>
-          <li>APIs</li>
-          <li>Microservices</li>
-        </ul>
-      </div>
-      <div class="capability-col">
-        <h4>Documentation</h4>
-        <ul>
-          <li>UML</li>
-          <li>Application dependencies</li>
-        </ul>
+      <div class="tool-body">
+        <div class="scope-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0;">
+          <div class="scope-col">
+            <h4>Analysis</h4>
+            <ul>
+              <li>Requirements gathering</li>
+              <li>Data flows</li>
+              <li>Functional specifications</li>
+              <li>Compliance</li>
+            </ul>
+          </div>
+          <div class="scope-col">
+            <h4>Technology</h4>
+            <ul>
+              <li>.NET</li>
+              <li>SQL Server</li>
+              <li>Business Objects</li>
+              <li>APIs</li>
+              <li>Microservices</li>
+            </ul>
+          </div>
+          <div class="scope-col">
+            <h4>Documentation</h4>
+            <ul>
+              <li>UML</li>
+              <li>Application dependencies</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="rule"></div>
+<div class="divider container"></div>
 
 <!-- CERTIFICATION & DELIVERY METHODS -->
-<section>
+<section class="why-section-tight">
   <div class="container">
-    <div class="section-label">Certification &amp; Delivery Methods</div>
+    <div class="section-label reveal">Certification &amp; Delivery Methods</div>
 
-    <div class="qual-primary">
+    <div class="qual-primary reveal">
       <h3>SAFe Advanced Scrum Master (SASM) &amp; SAFe Agilist 5.0 (SA)</h3>
       <p>Certified scaled Agile delivery qualifications</p>
     </div>
 
-    <div class="qual-list">
+    <div class="qual-list reveal">
       <div class="qual-list-item">Jira / Confluence</div>
       <div class="qual-list-item">Azure DevOps</div>
       <div class="qual-list-item">BPMN / UML</div>
@@ -569,21 +719,61 @@
 <!-- CLOSING -->
 <section class="closing">
   <div class="container">
-    <p>Farrukh combines <em>direct knowledge of the Phoenix / Standard Life environment</em> with current pensions transformation experience at Royal London, and the technical depth to work across requirements, data, integration and delivery.</p>
+    <p class="reveal">Farrukh combines <em>direct knowledge of the Phoenix / Standard Life environment</em> with current pensions transformation experience at Royal London, and the technical depth to work across requirements, data, integration and delivery.</p>
   </div>
 </section>
 
+<div class="divider container"></div>
+
+<!-- FOOTER -->
 <footer>
   <div class="container">
-    <div class="footer-inner">
-      <div class="f-name">Farrukh Azeem</div>
-      <div class="f-links">
-        <a href="https://www.linkedin.com/in/farrukh-azeem-705b6917/" target="_blank" rel="noopener">LinkedIn</a>
-      </div>
-      <div class="copyright">&copy; 2026 Farrukh Azeem. Profile prepared by <a href="https://www.transformtogether.co.uk/" target="_blank" rel="noopener" class="footer-tt-link">Transform Together</a></div>
+    <div class="f-name">Farrukh Azeem</div>
+    <div class="f-links">
+      <a href="https://www.linkedin.com/in/farrukh-azeem-705b6917/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
+    <div class="copyright">© 2026 Farrukh Azeem · Profile prepared by <a href="https://www.transformtogether.co.uk/" target="_blank" rel="noopener" class="footer-tt-link">Transform Together</a></div>
   </div>
 </footer>
 
+<button class="back-to-top" id="backToTop">↑</button>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 140) current = sec.getAttribute('id'); });
+    navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+
+    const btt = document.getElementById('backToTop');
+    if (window.scrollY > 400) btt.classList.add('show'); else btt.classList.remove('show');
+  });
+
+  // Hamburger
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const drawer = document.getElementById('mobileDrawer');
+  const drawerClose = document.getElementById('drawerClose');
+  function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); document.body.style.overflow=''; }
+  hamburgerBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  // Back to top
+  document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+</script>
 </body>
 </html>
